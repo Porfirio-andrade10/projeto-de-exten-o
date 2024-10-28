@@ -19,16 +19,16 @@ class Estoque:
         """
         Adiciona um novo produto à tabela de estoque no banco de dados.
         """
-        query_params = f"""INSERT INTO {nome_tabela} (nome, unidade_medida, custo, quantidade_estoque, data_validade) 
-        VALUES ({nome_produto}, {unidade_medida}, {custo}, {quantidade}, {data_validade})"""
+        query_params = f"INSERT INTO {nome_tabela} (unidade_medida, nome, custo, quantidade_estoque, data_validade) VALUES ('{unidade_medida}', '{nome_produto}', {custo}, {quantidade}, '{data_validade}')"
         self.db.execute_query(query_params)
         print(f"Produto '{nome_produto}' adicionado com sucesso à tabela '{nome_tabela}'.")
+        
 
     def remover_do_estoque(self,nome_tabela,nome_produto):
         """
         Remove um produto da tabela de estoque no banco de dados.
         """
-        query_params = f"DELETE FROM {nome_tabela} WHERE nome = {nome_produto}"
+        query_params = f"DELETE FROM {nome_tabela} WHERE nome = '{nome_produto}'"
 
         self.db.execute_query(query_params)
         print(f"Produto '{nome_produto}' removido com sucesso da tabela '{nome_tabela}'.")
@@ -47,5 +47,14 @@ class Estoque:
         """
         query = f"SELECT * FROM {nome_tabela}"
         resultado = self.db.fetch_query(query)
-        for item in resultado:
-            print(item)
+        return resultado if resultado is not None else 0
+
+def main():
+    db= Database()
+    Est = Estoque(db)
+    # Criar a aplicação passando a instância de Estoque
+    
+
+    db.execute_query()
+if __name__ == "__main__":
+    main()
